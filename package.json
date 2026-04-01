@@ -1,0 +1,47 @@
+{
+  "name": "exercises-cli",
+  "version": "1.0.4",
+  "description": "899+ fitness exercises in your terminal — search, filter, and export. Offline-ready, multilingual (EN/ES).",
+  "license": "MIT",
+  "author": "Kinetic.place",
+  "homepage": "https://kinetic.place",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kinetic-place/exercises-cli"
+  },
+  "keywords": [
+    "exercises",
+    "fitness",
+    "gym",
+    "workout",
+    "cli",
+    "muscle",
+    "strength",
+    "exercise-database",
+    "exercise-api",
+    "offline"
+  ],
+  "bin": {
+    "exercises": "./dist/cli.js",
+    "exercises-cli": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/copy-data.mjs && tsup",
+    "dev": "tsx src/cli.ts",
+    "prepublishOnly": "yarn build"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "commander": "^13.0.0",
+    "cli-table3": "^0.6.5"
+  }
+}
