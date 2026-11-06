@@ -1,40 +1,56 @@
 /**
- * Data loader — reads bundled JSON data based on locale.
+ * Data loader — reads the dataset's JSON files next to the bundle (dist/data/<locale>/, or
+ * src/data/ in dev), each the first time a command needs it.
  */
 
-import type { Exercise, MuscleGroup, Equipment, Locale } from './types.js';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import type { Exercise, ExerciseGuide, MuscleGroup, Equipment, Locale } from './types.js';
 
-// English
-import exercisesEn from './data/en/exercises.json';
-import musclesEn from './data/en/muscle_groups.json';
-import equipmentEn from './data/en/equipment.json';
+const files = new Map<string, unknown>();
 
-// Spanish
-import exercisesEs from './data/es/exercises.json';
-import musclesEs from './data/es/muscle_groups.json';
-import equipmentEs from './data/es/equipment.json';
-
-const datasets = {
-  en: {
-    exercises: exercisesEn as Exercise[],
-    muscles: musclesEn as MuscleGroup[],
-    equipment: equipmentEn as Equipment[],
-  },
-  es: {
-    exercises: exercisesEs as Exercise[],
-    muscles: musclesEs as MuscleGroup[],
-    equipment: equipmentEs as Equipment[],
-  },
-};
+function read<T>(locale: Locale, file: string): T {
+  const key = `${locale}/${file}`;
+  if (!files.has(key)) {
+    files.set(key, JSON.parse(readFileSync(join(__dirname, 'data', locale, file), 'utf8')));
+  }
+  return files.get(key) as T;
+}
 
 export function getExercises(locale: Locale): Exercise[] {
-  return datasets[locale].exercises;
+  return read<Exercise[]>(locale, 'exercises.json');
 }
 
 export function getMuscles(locale: Locale): MuscleGroup[] {
-  return datasets[locale].muscles;
+  return read<MuscleGroup[]>(locale, 'muscle_groups.json');
 }
 
 export function getEquipment(locale: Locale): Equipment[] {
-  return datasets[locale].equipment;
+  return read<Equipment[]>(locale, 'equipment.json');
+}
+
+// Guides are 5 MB a language: only the commands that show them read them.
+const guides = new Map<Locale, Map<string, ExerciseGuide>>();
+
+function getGuides(locale: Locale): Map<string, ExerciseGuide> {
+  let byId = guides.get(locale);
+  if (!byId) {
+    const list = read<ExerciseGuide[]>(locale, 'guides.json');
+    byId = new Map(list.map((guide) => [guide.exerciseId, guide]));
+    guides.set(locale, byId);
+  }
+  return byId;
+}
+
+export function getGuide(locale: Locale, exerciseId: string): ExerciseGuide | undefined {
+  return getGuides(locale).get(exerciseId);
+}
+
+export function getGuideCount(locale: Locale): number {
+  return getGuides(locale).size;
+}
+
+/** The CLI's version, from package.json next to dist/ (or src/ in dev). */
+export function getVersion(): string {
+  return JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf8')).version;
 }

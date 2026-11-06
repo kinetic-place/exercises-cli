@@ -1,7 +1,7 @@
 {
   "name": "exercises-cli",
-  "version": "1.0.4",
-  "description": "899+ fitness exercises in your terminal — search, filter, and export. Offline-ready, multilingual (EN/ES).",
+  "version": "1.2.0",
+  "description": "908 fitness exercises with step-by-step guides in your terminal and in your AI assistant (MCP server). Search, filter, and export. Offline-ready, multilingual (EN/ES).",
   "license": "MIT",
   "author": "Kinetic.place",
   "homepage": "https://kinetic.place",
@@ -19,11 +19,15 @@
     "strength",
     "exercise-database",
     "exercise-api",
-    "offline"
+    "offline",
+    "mcp",
+    "mcp-server",
+    "model-context-protocol"
   ],
   "bin": {
     "exercises": "./dist/cli.js",
-    "exercises-cli": "./dist/cli.js"
+    "exercises-cli": "./dist/cli.js",
+    "exercises-mcp": "./dist/mcp.js"
   },
   "files": [
     "dist",
@@ -31,17 +35,19 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "node scripts/copy-data.mjs && tsup",
-    "dev": "tsx src/cli.ts",
+    "build": "tsup && node scripts/copy-data.mjs --dist",
+    "dev": "node scripts/copy-data.mjs && tsx src/cli.ts",
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "tsup": "^8.0.0",
     "tsx": "^4.0.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "zod": "^4.3.6"
   },
   "dependencies": {
-    "commander": "^13.0.0",
-    "cli-table3": "^0.6.5"
+    "cli-table3": "^0.6.5",
+    "commander": "^13.0.0"
   }
 }

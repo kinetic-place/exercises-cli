@@ -1,12 +1,20 @@
 /**
  * Kinetic Exercises CLI — main entry point.
  *
- * 899+ fitness exercises searchable from your terminal, offline-ready.
+ * 908 fitness exercises with step-by-step guides, searchable from your terminal, offline-ready.
  */
 
 import { Command } from 'commander';
+import { join } from 'path';
 import type { Locale, Format, FilterOptions } from './types.js';
-import { getExercises, getMuscles, getEquipment } from './data.js';
+import {
+  getExercises,
+  getMuscles,
+  getEquipment,
+  getGuide,
+  getGuideCount,
+  getVersion,
+} from './data.js';
 import { searchExercises, filterExercises } from './filter.js';
 import {
   formatExercises,
@@ -21,8 +29,11 @@ const program = new Command();
 
 program
   .name('exercises')
-  .description('🏋️ 899+ fitness exercises in your terminal — search, filter, and export. Offline-ready.')
-  .version('1.0.0')
+  .description(
+    '🏋️ 908 fitness exercises in your terminal — search, filter, and export. Offline-ready.\n' +
+      '   Run `exercises mcp` to give them to an AI assistant.'
+  )
+  .version(getVersion())
   .option('-l, --locale <locale>', 'Language: en | es', 'en')
   .option('-f, --format <format>', 'Output: table | json | csv', 'table');
 
@@ -48,7 +59,9 @@ program
     const limit = parseInt(opts.limit, 10) || 20;
     const limited = results.slice(0, limit);
 
-    console.log(`\n  Found ${results.length} results for "${query}"${results.length > limit ? ` (showing ${limit})` : ''}\n`);
+    console.log(
+      `\n  Found ${results.length} results for "${query}"${results.length > limit ? ` (showing ${limit})` : ''}\n`
+    );
     process.stdout.write(formatExercises(limited, format));
   });
 
@@ -73,7 +86,9 @@ program
     const limit = parseInt(opts.limit, 10) || 20;
     const limited = results.slice(0, limit);
 
-    console.log(`\n  ${results.length} exercises${results.length > limit ? ` (showing ${limit})` : ''}\n`);
+    console.log(
+      `\n  ${results.length} exercises${results.length > limit ? ` (showing ${limit})` : ''}\n`
+    );
     process.stdout.write(formatExercises(limited, format));
   });
 
@@ -81,18 +96,20 @@ program
 
 program
   .command('get <id>')
-  .description('Get a single exercise by ID')
+  .description('Get a single exercise and its guide by ID, slug, or name')
   .action((id: string) => {
     const { locale, format } = globals();
     const exercises = getExercises(locale);
-    const ex = exercises.find((e) => e.id === id || e.name?.toLowerCase() === id.toLowerCase());
+    const ex = exercises.find(
+      (e) => e.id === id || e.slug === id || e.name?.toLowerCase() === id.toLowerCase()
+    );
 
     if (!ex) {
       console.error(`\n  Exercise not found: "${id}"\n`);
       process.exit(1);
     }
 
-    process.stdout.write(formatExerciseDetail(ex, format));
+    process.stdout.write(formatExerciseDetail(ex, getGuide(locale, ex.id), format));
   });
 
 // ---------- muscles ----------
@@ -142,7 +159,9 @@ program
     const equipment = getEquipment(locale);
 
     const categories = [...new Set(exercises.map((e) => e.category).filter(Boolean))] as string[];
-    const levels = [...new Set(exercises.map((e) => e.difficultyLevel).filter(Boolean))] as string[];
+    const levels = [
+      ...new Set(exercises.map((e) => e.difficultyLevel).filter(Boolean)),
+    ] as string[];
     categories.sort();
     levels.sort();
 
@@ -150,6 +169,7 @@ program
       formatStats(
         {
           exercises: exercises.length,
+          guides: getGuideCount(locale),
           muscles: muscles.length,
           equipment: equipment.length,
           categories,
@@ -185,6 +205,16 @@ program
     const limited = results.slice(0, limit);
 
     process.stdout.write(formatExercises(limited, format));
+  });
+
+// ---------- mcp ----------
+
+program
+  .command('mcp')
+  .description('Run the MCP server on stdio, for Claude, Cursor, Codex and other AI assistants')
+  .action(() => {
+    // Its own bundle next to this one, so the MCP SDK loads only for this command.
+    require(join(__dirname, 'mcp.js'));
   });
 
 // ---------- Helpers ----------

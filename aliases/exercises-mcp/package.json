@@ -1,0 +1,34 @@
+{
+  "name": "exercises-mcp",
+  "version": "1.2.0",
+  "description": "MCP server with 908 fitness exercises and step-by-step guides for Claude, Cursor, Codex and other AI assistants. Offline, multilingual (EN/ES). Part of exercises-cli.",
+  "license": "MIT",
+  "author": "Kinetic.place",
+  "homepage": "https://kinetic.place",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kinetic-place/exercises-cli"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "exercises",
+    "fitness",
+    "workout",
+    "exercise-database",
+    "claude",
+    "ai"
+  ],
+  "bin": {
+    "exercises-mcp": "./cli.js"
+  },
+  "files": [
+    "cli.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "exercises-cli": "1.2.0"
+  }
+}
