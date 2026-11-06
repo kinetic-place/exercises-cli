@@ -1,13 +1,13 @@
 {
   "name": "fitkit",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "908 fitness exercises with step-by-step guides in your terminal — search, filter, and export. Offline-ready, multilingual (EN/ES). Alias for exercises-cli.",
   "license": "MIT",
   "author": "Kinetic.place",
   "homepage": "https://kinetic.place",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kinetic-place/exercises-cli"
+    "url": "git+https://github.com/kinetic-place/exercises-cli.git"
   },
   "keywords": [
     "exercises",
@@ -19,7 +19,7 @@
     "offline"
   ],
   "bin": {
-    "fitkit": "./cli.js"
+    "fitkit": "cli.js"
   },
   "files": [
     "cli.js",
@@ -27,6 +27,6 @@
     "LICENSE"
   ],
   "dependencies": {
-    "exercises-cli": "1.0.0"
+    "exercises-cli": "1.2.0"
   }
 }

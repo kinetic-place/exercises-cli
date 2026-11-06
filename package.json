@@ -7,7 +7,7 @@
   "homepage": "https://kinetic.place",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kinetic-place/exercises-cli"
+    "url": "git+https://github.com/kinetic-place/exercises-cli.git"
   },
   "keywords": [
     "exercises",
@@ -25,9 +25,9 @@
     "model-context-protocol"
   ],
   "bin": {
-    "exercises": "./dist/cli.js",
-    "exercises-cli": "./dist/cli.js",
-    "exercises-mcp": "./dist/mcp.js"
+    "exercises": "dist/cli.js",
+    "exercises-cli": "dist/cli.js",
+    "exercises-mcp": "dist/mcp.js"
   },
   "files": [
     "dist",

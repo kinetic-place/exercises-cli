@@ -7,7 +7,7 @@
   "homepage": "https://kinetic.place",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kinetic-place/exercises-cli"
+    "url": "git+https://github.com/kinetic-place/exercises-cli.git"
   },
   "keywords": [
     "mcp",
@@ -21,7 +21,7 @@
     "ai"
   ],
   "bin": {
-    "exercises-mcp": "./cli.js"
+    "exercises-mcp": "cli.js"
   },
   "files": [
     "cli.js",
