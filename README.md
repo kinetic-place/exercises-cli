@@ -13,6 +13,8 @@
 
 It's also an MCP server, so Claude, Cursor, Codex and other AI assistants can search the exercises and read their guides.
 
+Every exercise has a page on [Kinetic.place](https://kinetic.place) with the videos creators license of it, for apps that need exercise video. `exercises get` and the MCP server link to it.
+
 Also available as: [`exercisedb`](https://npmjs.com/package/exercisedb) · [`exercises-db`](https://npmjs.com/package/exercises-db) · [`fitkit`](https://npmjs.com/package/fitkit) · [`exercises-mcp`](https://npmjs.com/package/exercises-mcp)
 
 ---
@@ -53,11 +55,11 @@ claude mcp add exercises -- npx -y exercises-mcp
 
 If you installed the CLI globally, `exercises mcp` starts the same server.
 
-| Tool               | What it does                                                                                                                                                       |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `search_exercises` | Finds exercises by name and by muscle, equipment, level, category, force and mechanics, in English or Spanish. Returns short summaries.                            |
-| `get_exercise`     | One exercise by ID, slug or name: muscles, equipment, its YouTube video and its guide, with alternatives and easier and harder variations. Suggests close matches. |
-| `list_filters`     | The values each search filter takes.                                                                                                                               |
+| Tool               | What it does                                                                                                                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `search_exercises` | Finds exercises by name and by muscle, equipment, level, category, force and mechanics, in English or Spanish. Returns short summaries, each with its page.                                       |
+| `get_exercise`     | One exercise by ID, slug or name: muscles, equipment, its YouTube video, its guide with alternatives and easier and harder variations, and its page of videos to license. Suggests close matches. |
+| `list_filters`     | The values each search filter takes.                                                                                                                                                              |
 
 Try asking your assistant for "a beginner leg day with only dumbbells, with a video for each exercise", or "what can I do instead of barbell squats with a sore back?"
 
@@ -89,7 +91,7 @@ exercises get d586b5aa-c2f4-4cb5-8038-d10b03c3b763
 exercises --locale es get barbell-squat
 ```
 
-Shows the exercise, a YouTube video of it (906 of the 908 have one) and, for 814, its guide: summary, setup, steps, form cues, breathing, common mistakes, programming and safety notes, and alternatives, easier and harder variations. `--format json` adds the whole guide (FAQ included) as `guide`.
+Shows the exercise, a YouTube video of it (906 of the 908 have one) and, for 814, its guide: summary, setup, steps, form cues, breathing, common mistakes, programming and safety notes, and alternatives, easier and harder variations. Last comes the exercise's page on Kinetic.place, where creators license videos of it (`/es/…` with `--locale es`). `--format json` adds the whole guide (FAQ included) as `guide` and the page as `links.page`.
 
 ```
   Video:      Best Squat Tutorial Ever Made (Davis Diley)
@@ -104,6 +106,9 @@ Shows the exercise, a YouTube video of it (906 of the 908 have one) and, for 814
   Alternatives:
     • Dumbbell Squat — Trains the same movement pattern with dumbbells instead of a barbell, useful when a rack isn't available.
     • Leg Press — Loads the quads through a similar range using a machine, a useful option when your back needs a break from spinal loading.
+  ...
+
+  Videos to license for this exercise: https://kinetic.place/exercises/605ab3e8-4491-4737-aa22-f06598adadf5
 ```
 
 Guides are general guidance, not medical advice.

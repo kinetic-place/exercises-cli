@@ -1,6 +1,6 @@
 {
   "name": "exercises-mcp",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "MCP server with 908 fitness exercises and step-by-step guides for Claude, Cursor, Codex and other AI assistants. Offline, multilingual (EN/ES). Part of exercises-cli.",
   "license": "MIT",
   "author": "Kinetic.place",
@@ -29,6 +29,6 @@
     "LICENSE"
   ],
   "dependencies": {
-    "exercises-cli": "1.2.0"
+    "exercises-cli": "1.2.1"
   }
 }

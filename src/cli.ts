@@ -16,6 +16,7 @@ import {
   getVersion,
 } from './data.js';
 import { searchExercises, filterExercises } from './filter.js';
+import { exercisePageUrl } from './page.js';
 import {
   formatExercises,
   formatExerciseDetail,
@@ -96,7 +97,9 @@ program
 
 program
   .command('get <id>')
-  .description('Get a single exercise and its guide by ID, slug, or name')
+  .description(
+    'Get a single exercise, its guide and its page of videos to license, by ID, slug, or name'
+  )
   .action((id: string) => {
     const { locale, format } = globals();
     const exercises = getExercises(locale);
@@ -109,7 +112,9 @@ program
       process.exit(1);
     }
 
-    process.stdout.write(formatExerciseDetail(ex, getGuide(locale, ex.id), format));
+    process.stdout.write(
+      formatExerciseDetail(ex, getGuide(locale, ex.id), exercisePageUrl(ex.id, locale), format)
+    );
   });
 
 // ---------- muscles ----------

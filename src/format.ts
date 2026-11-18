@@ -11,6 +11,7 @@ import type {
   Equipment,
   Format,
 } from './types.js';
+import { PAGE_LABEL } from './page.js';
 
 // ---------- Exercises ----------
 
@@ -78,12 +79,16 @@ function exercisesToCsv(exercises: Exercise[]): string {
 
 // ---------- Exercise detail ----------
 
+/** `page`: the exercise's page on Kinetic.place (page.ts), last in the terminal. */
 export function formatExerciseDetail(
   ex: Exercise,
   guide: ExerciseGuide | undefined,
+  page: string,
   format: Format
 ): string {
-  if (format === 'json') return JSON.stringify({ ...ex, guide: guide ?? null }, null, 2);
+  if (format === 'json') {
+    return JSON.stringify({ ...ex, links: { page }, guide: guide ?? null }, null, 2);
+  }
 
   const lines = [
     '',
@@ -120,6 +125,7 @@ export function formatExerciseDetail(
     lines.push('');
   }
 
+  lines.push(`  \x1b[36m${PAGE_LABEL}:\x1b[0m ${page}`, '');
   return lines.join('\n') + '\n';
 }
 
